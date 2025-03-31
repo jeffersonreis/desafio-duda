@@ -33,8 +33,6 @@ export const getComprasCovidMunicipio = async (
 };
 
 export const getCompraDetails = async (id: string) => {
-  // Aqui você precisaria implementar a chamada específica para obter os detalhes
-  // de uma compra baseado no ID
   const response = await api.get(`/compras_diretas_estado/${id}`);
   return response.data;
 };

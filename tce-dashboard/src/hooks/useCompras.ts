@@ -1,4 +1,3 @@
-// hooks/useCompras.ts
 import { useQuery } from '@tanstack/react-query';
 import { getComprasEstado, getComprasMunicipio, getComprasCovidEstado, getComprasCovidMunicipio } from '../services/api';
 

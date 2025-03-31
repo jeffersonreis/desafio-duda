@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { theme } from './theme';
 import { Dashboard } from './pages/Dashboard';
-import { ComprasDetails } from './pages/ComprasDetails';
 import { Layout } from './components/Layout';
 
 const queryClient = new QueryClient();
@@ -17,7 +16,6 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/compras/:id" element={<ComprasDetails />} />
             </Routes>
           </Layout>
         </BrowserRouter>

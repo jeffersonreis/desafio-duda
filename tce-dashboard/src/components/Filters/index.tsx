@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
 
 interface FiltersProps {

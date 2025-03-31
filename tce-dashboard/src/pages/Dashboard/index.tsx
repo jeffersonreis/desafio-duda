@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Grid, Paper, Box } from '@mui/material';
 import { ComprasList } from '../../components/ComprasList';
 import { Filters } from '../../components/Filters';
@@ -33,8 +33,8 @@ export function Dashboard() {
     <Box 
       sx={{ 
         width: '100%', 
-        padding: 3, // Adiciona padding geral
-        marginTop: 2, // Adiciona margem superior em relação ao header
+        padding: 3,
+        marginTop: 2,
       }}
     >
       <Paper sx={{ width: '100%', mb: 3, p: 2 }}>
