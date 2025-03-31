@@ -49,22 +49,27 @@ export function Dashboard() {
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 8 }}>
           <Paper sx={{ width: '100%', mb: 3 }}>
-            <ComprasList
-              data={comprasData}
-              isLoading={isLoading}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              onPageChange={setPage}
-              onRowsPerPageChange={setRowsPerPage}
-              total={total}
-              tipoCompra={tipoCompra}
-            />
+          <ComprasList
+            data={comprasData}
+            isLoading={isLoading}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            onPageChange={setPage}
+            onRowsPerPageChange={setRowsPerPage}
+            total={total}
+            tipoCompra={tipoCompra}
+            tipoDados={tipoDados}
+          />
           </Paper>
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>
           <Paper sx={{ width: '100%', mb: 3, p: 2 }}>
-            <Charts data={comprasData} tipoCompra={tipoCompra} />
+            <Charts 
+              data={comprasData} 
+              tipoCompra={tipoCompra}
+              tipoDados={tipoDados}
+            />
           </Paper>
         </Grid>
       </Grid>

@@ -10,9 +10,10 @@ interface ComprasListProps {
   onRowsPerPageChange: (rowsPerPage: number) => void;
   total: number;
   tipoCompra: 'estado' | 'municipio';
+  tipoDados: 'normal' | 'covid';
 }
 
-export function ComprasList({ data, isLoading, page, rowsPerPage, onPageChange, onRowsPerPageChange, total, tipoCompra }: ComprasListProps) {
+export function ComprasList({ data, isLoading, page, rowsPerPage, onPageChange, onRowsPerPageChange, total, tipoCompra, tipoDados }: ComprasListProps) {
   const [orderBy, setOrderBy] = useState<string>('');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -40,60 +41,55 @@ export function ComprasList({ data, isLoading, page, rowsPerPage, onPageChange, 
       })
     : data;
 
+  const getColumnConfig = () => {
+    if (tipoDados === 'normal') {
+      return [
+        { id: tipoCompra === 'estado' ? 'Processo' : 'AnoProcesso', label: 'Processo/Ano' },
+        { id: tipoCompra === 'estado' ? 'ValorProcesso' : 'ValorTotalCompra', label: 'Valor' },
+        { id: 'Objeto', label: 'Objeto' },
+        { id: tipoCompra === 'estado' ? 'FornecedorVencedor' : 'Fornecedor', label: 'Fornecedor' },
+      ];
+    } else {
+      return [
+        { id: 'ProcessoAdministrativo', label: 'Processo' },
+        { id: 'Valor', label: 'Valor' },
+        { id: 'Objeto', label: 'Objeto' },
+        { id: 'NomeRazaoSocial', label: 'Fornecedor' },
+      ];
+    }
+  };
+
+  const columns = getColumnConfig();
+
   return (
     <Paper>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === (tipoCompra === 'estado' ? 'Processo' : 'AnoProcesso')}
-                  direction={orderBy === (tipoCompra === 'estado' ? 'Processo' : 'AnoProcesso') ? order : 'asc'}
-                  onClick={() => handleRequestSort(tipoCompra === 'estado' ? 'Processo' : 'AnoProcesso')}
-                >
-                  Processo/Ano
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === (tipoCompra === 'estado' ? 'ValorProcesso' : 'ValorTotalCompra')}
-                  direction={orderBy === (tipoCompra === 'estado' ? 'ValorProcesso' : 'ValorTotalCompra') ? order : 'asc'}
-                  onClick={() => handleRequestSort(tipoCompra === 'estado' ? 'ValorProcesso' : 'ValorTotalCompra')}
-                >
-                  Valor
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'Objeto'}
-                  direction={orderBy === 'Objeto' ? order : 'asc'}
-                  onClick={() => handleRequestSort('Objeto')}
-                >
-                  Objeto
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === (tipoCompra === 'estado' ? 'FornecedorVencedor' : 'Fornecedor')}
-                  direction={orderBy === (tipoCompra === 'estado' ? 'FornecedorVencedor' : 'Fornecedor') ? order : 'asc'}
-                  onClick={() => handleRequestSort(tipoCompra === 'estado' ? 'FornecedorVencedor' : 'Fornecedor')}
-                >
-                  Fornecedor
-                </TableSortLabel>
-              </TableCell>
+              {columns.map((column) => (
+                <TableCell key={column.id}>
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={orderBy === column.id ? order : 'asc'}
+                    onClick={() => handleRequestSort(column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
             {sortedData.map((row, index) => (
               <TableRow key={index}>
-                <TableCell>{tipoCompra === 'estado' ? row.Processo : row.AnoProcesso}</TableCell>
-                <TableCell>
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
-                    .format(tipoCompra === 'estado' ? row.ValorProcesso : row.ValorTotalCompra)}
-                </TableCell>
-                <TableCell>{row.Objeto}</TableCell>
-                <TableCell>{tipoCompra === 'estado' ? row.FornecedorVencedor : row.Fornecedor}</TableCell>
+                {columns.map((column) => (
+                  <TableCell key={column.id}>
+                    {column.id.includes('Valor') 
+                      ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(row[column.id])
+                      : row[column.id]}
+                  </TableCell>
+                ))}
               </TableRow>
             ))}
           </TableBody>
